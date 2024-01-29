@@ -12,14 +12,6 @@ import java.io.IOException;
 @Component
 public class GithubProvider
 {
-    /*
-    p12利用accesstoken进行用户信息获取的方法现在不适用了，应该改成下面这段代码，
-    即不需要再url里直接加入token，而应该再响应头中加入下面的话
-    Request request = new Request.Builder()
-    .url("https://api.github.com/user")
-    .header("Authorization","token "+accessToken)
-    .build();
-     */
     public String getAccessToken(AccessTokenDTO accessTokenDTO)
     {
         MediaType mediaType = MediaType.get("application/json");
@@ -49,9 +41,6 @@ public class GithubProvider
     {
         OkHttpClient client = new OkHttpClient();
 
-//        Request request = new Request.Builder()
-//                .url(url)
-//                .build();
         Request request = new Request.Builder()
                 .url("https://api.github.com/user")
                 .header("Authorization", "token " + accessToken)
