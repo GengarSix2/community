@@ -48,31 +48,25 @@ public class AuthorizeController
         // 打印user信息
         System.out.println(githubUser.getName());
 
-        if (githubUser != null)
+        if (githubUser.getId() != null)
         {
             User user = new User();
             String token = UUID.randomUUID().toString();
             user.setToken(token);
             user.setName(githubUser.getName());
-            user.setAccount_id(String.valueOf(githubUser.getId()));
-            user.setGmt_create(System.currentTimeMillis());
-            user.setGmt_modified(user.getGmt_create());
+            user.setAccountId(String.valueOf(githubUser.getId()));
+            user.setGmtCreate(System.currentTimeMillis());
+            user.setGmtModified(user.getGmtCreate());
+            user.setAvatarUrl(githubUser.getAvatarUrl());
+
             userMapper.insert(user);
-
             response.addCookie(new Cookie("token", token));
-
-            // 登录成功 重定向首页
-            // return "redirect:/";
-            // 解决重定向后uri参数携带JSESSIONID
-            response.sendRedirect("/");
-            return null;
-        } else
-        {
-            // 登录失败 重新登陆
-            // return "redirect:/";
-            // 解决重定向后uri参数携带JSESSIONID
-            response.sendRedirect("/");
-            return null;
         }
+
+        // 重定向首页
+        // return "redirect:/";
+        // 解决重定向后uri参数携带JSESSIONID
+        response.sendRedirect("/");
+        return null;
     }
 }
