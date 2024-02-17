@@ -59,7 +59,51 @@ public class QuestionService
         paginationDTO.setQuestions(questionDTOList);
         paginationDTO.setPage(page);
         paginationDTO.setTotalPage(totalPage);
-        paginationDTO.setPagination();
+        paginationDTO.setPagination(totalPage, page);
+
+        return paginationDTO;
+    }
+
+    public PaginationDTO listByUserID(Integer userID, Integer page, Integer size)
+    {
+        Integer totalCount = questionMapper.countByUserId(userID);
+        int totalPage;
+
+        if (totalCount % size == 0)
+        {
+            totalPage = totalCount / size;
+        } else
+        {
+            totalPage = totalCount / size + 1;
+        }
+
+        // 处理当前页序号不合法的情况
+        if (page < 1)
+        {
+            page = 1;
+        }
+        if (page > totalPage)
+        {
+            page = totalPage;
+        }
+        Integer offset = size * (page - 1);
+
+        List<Question> questionList = questionMapper.listByUserID(userID, offset, size);
+        List<QuestionDTO> questionDTOList = new ArrayList<>();
+        for (Question question : questionList)
+        {
+            User user = userMapper.findById(question.getCreator());
+            QuestionDTO questionDTO = new QuestionDTO();
+            BeanUtils.copyProperties(question, questionDTO);
+            questionDTO.setUser(user);
+            questionDTOList.add(questionDTO);
+        }
+
+        PaginationDTO paginationDTO = new PaginationDTO();
+        paginationDTO.setQuestions(questionDTOList);
+        paginationDTO.setPage(page);
+        paginationDTO.setTotalPage(totalPage);
+        paginationDTO.setPagination(totalPage, page);
 
         return paginationDTO;
     }
