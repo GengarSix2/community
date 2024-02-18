@@ -21,9 +21,18 @@ public class SessionInterceptor implements HandlerInterceptor
     @Override
     public boolean preHandle(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler)
     {
-        Cookie[] cookies = request.getCookies();
+        // 手动登录
+//        String token = "aee9e4c9-ba19-4f29-acdc-4748f2151b64";
+//        User user = userMapper.findByToken(token);
+//        if (user != null)
+//        {
+//            request.getSession().setAttribute("user", user);
+//            return true;
+//        }
 
-        if (cookies != null && cookies.length != 0)
+        // Cookie实现持久化登录
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null)
         {
             for (Cookie cookie : cookies)
             {

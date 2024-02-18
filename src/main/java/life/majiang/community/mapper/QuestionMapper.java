@@ -1,10 +1,7 @@
 package life.majiang.community.mapper;
 
 import life.majiang.community.model.Question;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -17,12 +14,18 @@ public interface QuestionMapper
     @Select("SELECT * FROM QUESTION LIMIT #{offset}, #{size}")
     List<Question> list(@Param(value = "offset") Integer offset, @Param(value = "size") Integer size);
 
-    @Select("SELECT COUNT(1) FROM QUESTION")
-    Integer count();
-
     @Select("SELECT * FROM QUESTION WHERE creator = #{userID} LIMIT #{offset}, #{size}")
     List<Question> listByUserID(@Param(value = "userID") Integer userID, @Param(value = "offset") Integer offset, @Param(value = "size") Integer size);
 
+    @Select("SELECT COUNT(1) FROM QUESTION")
+    Integer count();
+
     @Select("SELECT COUNT(1) FROM QUESTION WHERE creator = #{userID}")
     Integer countByUserId(@Param(value = "userID") Integer userID);
+
+    @Select("SELECT * FROM QUESTION WHERE id = #{questionId}")
+    Question getById(@Param(value = "questionId") Integer questionId);
+
+    @Update("UPDATE QUESTION SET title = #{title}, description = #{description}, tag = #{tag} WHERE id = #{id}")
+    void update(Question question);
 }
