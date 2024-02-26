@@ -3,7 +3,6 @@ package life.majiang.community.interceptor;
 import life.majiang.community.mapper.UserMapper;
 import life.majiang.community.model.User;
 import life.majiang.community.model.UserExample;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -21,7 +20,7 @@ public class SessionInterceptor implements HandlerInterceptor
     private UserMapper userMapper;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler)
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
     {
         // 手动登录
 //        String token = "aee9e4c9-ba19-4f29-acdc-4748f2151b64";
@@ -59,15 +58,15 @@ public class SessionInterceptor implements HandlerInterceptor
     }
 
     @Override
-    public void postHandle(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response,
-                           @NotNull Object handler, ModelAndView modelAndView) throws Exception
+    public void postHandle(HttpServletRequest request, HttpServletResponse response,
+                           Object handler, ModelAndView modelAndView) throws Exception
     {
         HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
     }
 
     @Override
-    public void afterCompletion(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response,
-                                @NotNull Object handler, Exception ex) throws Exception
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
+                                Object handler, Exception ex) throws Exception
     {
         HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
     }

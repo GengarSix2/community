@@ -4,24 +4,30 @@ import life.majiang.community.dto.PaginationDTO;
 import life.majiang.community.dto.QuestionDTO;
 import life.majiang.community.exception.CustomizeErrorCode;
 import life.majiang.community.exception.CustomizeException;
+import life.majiang.community.mapper.QuestionExtMapper;
 import life.majiang.community.mapper.QuestionMapper;
 import life.majiang.community.mapper.UserMapper;
 import life.majiang.community.model.Question;
 import life.majiang.community.model.QuestionExample;
 import life.majiang.community.model.User;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestionService
 {
     @Autowired
     private QuestionMapper questionMapper;
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
     @Autowired
     private UserMapper userMapper;
 
@@ -68,7 +74,7 @@ public class QuestionService
         return paginationDTO;
     }
 
-    public PaginationDTO listByUserID(Integer userId, Integer page, Integer size)
+    public PaginationDTO listByUserID(Long userId, Integer page, Integer size)
     {
         QuestionExample example = new QuestionExample();
         example.createCriteria().andCreatorEqualTo(userId);
@@ -116,7 +122,7 @@ public class QuestionService
         return paginationDTO;
     }
 
-    public QuestionDTO getById(Integer questionId)
+    public QuestionDTO getById(Long questionId)
     {
         Question question = questionMapper.selectByPrimaryKey(questionId);
         if (question == null)
@@ -139,6 +145,9 @@ public class QuestionService
             // 创建问题
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
+            question.setViewCount(0);
+            question.setLikeCount(0);
+            question.setCommentCount(0);
             questionMapper.insert(question);
         } else
         {
@@ -159,4 +168,34 @@ public class QuestionService
             }
         }
     }
+
+    public void incView(Long questionId)
+    {
+        Question question = new Question();
+        question.setId(questionId);
+        question.setViewCount(1);
+        questionExtMapper.incView(question);
+    }
+
+//    public List<QuestionDTO> selectRelated(QuestionDTO queryDTO)
+//    {
+//        if (StringUtils.isBlank(queryDTO.getTag()))
+//        {
+//            return new ArrayList<>();
+//        }
+//        String[] tags = StringUtils.split(queryDTO.getTag(), ",");
+//        String regexpTag = Arrays.stream(tags).filter(StringUtils::isNotBlank).map(t -> t.replace("+", "").replace("*", "").replace("?", "")).filter(StringUtils::isNotBlank).collect(Collectors.joining("|"));
+//        Question question = new Question();
+//        question.setId(queryDTO.getId());
+//        question.setTag(regexpTag);
+//
+//        List<Question> questions = questionExtMapper.selectRelated(question);
+//        List<QuestionDTO> questionDTOS = questions.stream().map(q ->
+//        {
+//            QuestionDTO questionDTO = new QuestionDTO();
+//            BeanUtils.copyProperties(q, questionDTO);
+//            return questionDTO;
+//        }).collect(Collectors.toList());
+//        return questionDTOS;
+//    }
 }

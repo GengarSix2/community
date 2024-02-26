@@ -12,6 +12,15 @@
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
 
 </head>
+<script type="application/javascript">
+    window.onload = function () {
+        var closable = window.localStorage.getItem("closable");
+        if (closable === "true") {
+            window.close();
+            window.localStorage.removeItem("closable");
+        }
+    }
+</script>
 <body>
 
 <div th:insert="~{navigation :: nav}"></div>
@@ -25,7 +34,7 @@
             <div class="media" th:each="question : ${paginationDTO.questions}">
                 <div class="media-left">
                     <a th:href="${question.user.avatarUrl}">
-                        <img class="media-object img-circle" th:src="${question.user.avatarUrl}">
+                        <img class="media-object img-rounded" th:src="${question.user.avatarUrl}">
                     </a>
                 </div>
                 <div class="media-body">

@@ -23,7 +23,7 @@ public class PublishController
     private QuestionService questionService;
 
     @GetMapping("/publish/{id}")
-    public String edit(@PathVariable(name = "id") Integer id,
+    public String edit(@PathVariable(name = "id") Long id,
                        Model model) throws IOException
     {
         QuestionDTO questionDTO = questionService.getById(id);
@@ -46,7 +46,7 @@ public class PublishController
     public String doPublish(@RequestParam("title") String title,
                             @RequestParam("description") String description,
                             @RequestParam("tag") String tag,
-                            @RequestParam(value = "id", required = false) Integer id,
+                            @RequestParam(value = "id", required = false) Long id,
                             HttpServletRequest request,
                             HttpServletResponse response,
                             Model model) throws IOException
@@ -79,11 +79,11 @@ public class PublishController
         }
 
         Question question = new Question();
+        question.setId(id);
         question.setTitle(title);
+        question.setCreator(user.getId());
         question.setDescription(description);
         question.setTag(tag);
-        question.setCreator(user.getId());
-        question.setId(id);
         questionService.createOrUpdate(question);
 
         // 发布未出现异常 重定向回首页
