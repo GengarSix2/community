@@ -1,6 +1,4 @@
-package life.majiang.community.model;
-
-import jdk.internal.org.objectweb.asm.tree.analysis.Analyzer;
+package life.majiang.community.test;
 
 public class Test
 {

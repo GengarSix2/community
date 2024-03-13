@@ -37,7 +37,7 @@ public class QuestionController
         }
 
         QuestionDTO questionDTO = questionService.getById(questionId);
-//        List<QuestionDTO> relatedQuestions = questionService.selectRelated(questionDTO);
+        List<QuestionDTO> relatedQuestions = questionService.selectRelated(questionDTO);
         List<CommentDTO> comments = commentService.listByTargetId(questionId, CommentTypeEnum.QUESTION);
 
 
@@ -45,7 +45,7 @@ public class QuestionController
         questionService.incView(questionId);
         model.addAttribute("question", questionDTO);
         model.addAttribute("comments", comments);
-//        model.addAttribute("relatedQuestions", relatedQuestions);
+        model.addAttribute("relatedQuestions", relatedQuestions);
 
         return "question";
     }

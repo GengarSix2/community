@@ -5,6 +5,7 @@ import life.majiang.community.dto.GithubUser;
 import life.majiang.community.model.User;
 import life.majiang.community.provider.GithubProvider;
 import life.majiang.community.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 @Controller
+@Slf4j
 public class AuthorizeController
 {
     @Autowired
@@ -46,8 +48,6 @@ public class AuthorizeController
 
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
         GithubUser githubUser = githubProvider.getUser(accessToken);
-        // 打印user信息
-//        System.out.println(githubUser.getName());
 
         if (githubUser.getId() != null)
         {
@@ -59,6 +59,11 @@ public class AuthorizeController
             user.setAvatarUrl(githubUser.getAvatarUrl());
             userService.createOrUpdate(user);
             response.addCookie(new Cookie("token", token));
+
+
+        } else {
+            // 登录失败 重新登录 日志记录
+            log.error("callback get github error! {}", githubUser);
         }
 
         // 重定向首页
