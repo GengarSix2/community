@@ -15,6 +15,7 @@
 2024-03-13 20:13:54.066  INFO 42792 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
 	name: default
 	...]
+
 2024-03-13 20:13:54.139  INFO 42792 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate Core {5.3.10.Final}
 2024-03-13 20:13:54.141  INFO 42792 --- [restartedMain] org.hibernate.cfg.Environment            : HHH000206: hibernate.properties not found
 2024-03-13 20:13:54.228  INFO 42792 --- [restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
