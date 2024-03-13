@@ -4,8 +4,8 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### LOGS ###
 logs
-*.log
 
 ### STS ###
 .apt_generated
@@ -13,7 +13,7 @@ logs
 .factorypath
 .project
 .settings
-.springBeans
+.springBeansgit
 .sts4-cache
 
 ### IntelliJ IDEA ###
